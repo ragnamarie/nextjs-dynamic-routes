@@ -1,21 +1,22 @@
-import Image from "next/image";
 import Link from "next/link";
-import { volumes } from "../../lib/data.js";
+import { useRouter } from "next/router";
+import { volumes } from "../../lib/data";
+import Image from "next/image";
 
-export default function VolumeDetail() {
-  const volumeIndex = volumes.findIndex(
-    ({ slug }) => slug === "the-two-towers"
-  );
+export default function VolumeDetails() {
+  const router = useRouter();
+  const { slug } = router.query;
 
-  const volume = volumes[volumeIndex];
-  const nextVolume = volumes[volumeIndex + 1];
-  const previousVolume = volumes[volumeIndex - 1];
+  const currentVolume = volumes.find((volume) => volume.slug === slug);
 
-  if (!volume) {
+  const nextVolume = volumes[currentVolume + 1];
+  const previousVolume = volumes[currentVolume - 1];
+
+  if (!currentVolume) {
     return null;
   }
 
-  const { title, description, cover, books } = volume;
+  const { title, description, cover, books } = currentVolume;
 
   return (
     <>
